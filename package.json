@@ -1,19 +1,16 @@
 {
-  "name": "recursive-uglifyjs",
-  "version": "0.1.3",
+  "name": "recursive-uglifyjs-sourcemap",
+  "version": "0.1",
   "keywords": [
     "uglifyjs",
     "recursive",
     "minify"
   ],
-  "description": "Recursively traverses a directory and uglifies all JavaScript files contained in the directory and its children.",
+  "description": "Recursively traverses a directory and uglifies all JavaScript files contained in the directory and its children and builds source maps.",
   "author": "James Newell <james@digitaledgeit.com.au>",
-  "bugs": {
-    "url": "https://github.com/digitaledgeit/npm-recursive-uglifyjs/issues"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/digitaledgeit/npm-recursive-uglifyjs.git"
+    "url": "https://github.com/bmarkov/npm-recursive-uglifyjs.git"
   },
   "dependencies": {
     "debug": "^2.1.0",
