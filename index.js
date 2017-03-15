@@ -80,8 +80,9 @@ function recursiveUglifyJS(directory, callback) {
         var map;
 	try {
 	   var fileName = file.split('//')[1];	
-           code = uglify.minify(source, {fromString: true}).code;
-           map = uglify.minify(source, {fromString: true}).map;
+	   var result = uglify.minify(source, {outSourceMap: "out.js.map", outFileName: fileName + "out.js", fromString: true});
+           code = result.code;
+           map = result.map;
         } catch (error) {
           return finished(file, error);
         }
