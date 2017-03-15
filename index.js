@@ -77,8 +77,10 @@ function recursiveUglifyJS(directory, callback) {
 
         //minify the code
         var code;
-        try {
+        var map;
+	try {
            code = uglify.minify(source, {  outSourceMap: file + ".map", fromString: true}).code;
+           map = uglify.minify(source, {  outSourceMap: file + ".map", fromString: true}).map;
         } catch (error) {
           return finished(file, error);
         }
@@ -89,10 +91,13 @@ function recursiveUglifyJS(directory, callback) {
 
           debug('Uglified: ' + file);
 
-          //uglify the next script
-          next();
-
+	  fs.writeFile(file + ".map", map, function(error) {
+	  	//uglify next script
+	  	next();
+	  });
+          
         });
+	      
 
       });
 
