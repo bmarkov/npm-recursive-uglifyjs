@@ -3,6 +3,7 @@ var debug = require('debug')('recursive-uglifyjs');
 var uglify = require('uglify-js');
 var finder = require('finder-on-steroids');
 
+
 /**
  * Uglifies all JavaScript files in a given folder
  * @param   {string}    directory
@@ -78,29 +79,33 @@ function recursiveUglifyJS(directory, callback) {
         //minify the code
         var code;
         var map;
-	try {
-	   code = uglify.minify(source, {outSourceMap: "jqxbutton.js.map", outFileName: "jqxbutton.js", fromString: true}).code;
-           map = uglify.minify(source, {outSourceMap: "jqxbutton.js.map", outFileName: "jqxbutton.js", fromString: true}).map;
+		var fileName = file.toString().split('\\')[1];
+		debug(file);
+		
+		try {
+		   code = uglify.minify(source, {sourceMapIncludeSources: true, outSourceMap: fileName + ".map",  outFileName: fileName, fromString: true}).code;
+           map = uglify.minify(source, {sourceMapIncludeSources: true, outSourceMap: fileName + "", outFileName: fileName, fromString: true}).map;
         } catch (error) {
           return finished(file, error);
         }
-
+		
+        var json = {"sourceContent": source};
+		
+		map = map.replace('"sources":["?"]', '"sources":["' + fileName + '"]');
+		map = map.replace('null', JSON.stringify(source));
         //write the code back to the file
         fs.writeFile(file, code, function(error) {
           if (error) return finished(file, error);
 
           debug('Uglified: ' + file);
 
-	  fs.writeFile(file + ".map", map, function(error) {
-	  	//uglify next script
-	  	next();
-	  });
-          
+		 fs.writeFile(file + ".map", map, function(error) {
+			//uglify next script
+			next();
+		 });   
         });
-	      
-
-      });
-
+	     
+		});
 		}
 
     //start processes
